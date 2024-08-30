@@ -91,6 +91,11 @@ public class Maincontroller {
 
 
 
+![image](https://github.com/user-attachments/assets/566de97d-aecd-47df-b96b-f89b9539a7e4)
+![image](https://github.com/user-attachments/assets/6880a1b1-90e6-418a-a759-07155ba6fbbe)
+![image](https://github.com/user-attachments/assets/c9e39580-f48d-401e-904f-7eb51e580bd3)
+
+
 
 
 
