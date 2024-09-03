@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<div class="container">
+    <div class="header">
+        <h1>Dzisiaj wybraliśmy:</h1>
+        <a href="#" id="chosen-food-link">Link to chosen food website</a>
+    </div>
+
+    <div class="timer-section">
+        <div class="timer">
+            <p>Czas upłynie o: <span>{{ endTime }}</span></p>
+            <p>Zostało: <span>{{ timeLeft }}</span></p>
+        </div>
+        <div class="order-status">
+            <p>Twoje zamówienie: <span>{{ orderStatus }}</span></p>
+        </div>
+    </div>
+
+    <div class="order-section">
+        <form [formGroup]="orderForm" (ngSubmit)="submitOrder()">
+            <label for="order-name">Zamawiający:</label>
+            <input formControlName="orderName" id="order-name" type="text" />
+
+            <div class="payment-options">
+                <p>Metoda płatności:</p>
+                <input type="radio" id="cash" formControlName="paymentMethod" value="cash" />
+                <label for="cash">Gotówka</label><br />
+                <input type="radio" id="blik" formControlName="paymentMethod" value="blik" />
+                <label for="blik">Blik na telefon</label><br />
+                <input type="radio" id="card" formControlName="paymentMethod" value="card" />
+                <label for="card">Karta</label>
+            </div>
+
+            <label for="order-description">Opis zamówienia:</label>
+            <textarea formControlName="orderDescription" id="order-description"></textarea>
+
+            <label for="order-price">Podaj cenę:</label>
+            <input formControlName="orderPrice" id="order-price" type="text" />
+
+            <button type="submit" [disabled]="orderForm.invalid">Złóż zamówienie</button>
+        </form>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; K&W group sp.z.o.</p>
+</footer>
+
+</html>
