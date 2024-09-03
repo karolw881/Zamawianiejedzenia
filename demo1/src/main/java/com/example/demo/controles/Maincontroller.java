@@ -1,5 +1,7 @@
 package com.example.demo.controles;
 
+
+import com.example.demo.Services.ServicePozycjaZamowienie;
 import com.example.demo.Services.ServiceZamowienie;
 import com.example.demo.Zamowienie;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +16,14 @@ public class Maincontroller {
 
     private final ServiceZamowienie serviceZamowienie; // definiuj Serwis w kontrolerze
 
+
     public Maincontroller(ServiceZamowienie serviceZamowienie) {
         this.serviceZamowienie = serviceZamowienie;
+
     }
+
+
+
 
     @CrossOrigin
     @GetMapping("/List")
@@ -61,4 +68,8 @@ public class Maincontroller {
      Zamowienie zamowienie = serviceZamowienie.getLastZamowienie();
         return ResponseEntity.ok(zamowienie);
     }
+
+
+
+
 }

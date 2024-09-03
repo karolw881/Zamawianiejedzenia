@@ -17,6 +17,8 @@ public class ServicePozycjaZamowienie {
     public PozycjaZamowienie createPozycjaZamowienie(PozycjaZamowienie pz){
         return pozycjaZamowienierepository.save(pz);
     }
+
+
     public void deletePozycjaZamowienie(PozycjaZamowienie pz){
        pozycjaZamowienierepository.delete(pz);
     }
