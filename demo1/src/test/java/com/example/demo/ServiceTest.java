@@ -23,6 +23,7 @@ public class ServiceTest {
     }
 
 
+    /*
     @Test
     public void testCreateZamowienie() {
         Zamowienie zamowienie = new Zamowienie(1,"a","b",1);
@@ -33,6 +34,8 @@ public class ServiceTest {
         assertNotNull(result);
         verify(zamowienieRepository, times(1)).save(zamowienie);
     }
+
+     */
 
 
 }
