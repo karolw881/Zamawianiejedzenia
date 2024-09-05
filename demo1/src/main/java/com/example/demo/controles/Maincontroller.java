@@ -1,9 +1,9 @@
 package com.example.demo.controles;
 
 
-import com.example.demo.Services.ServicePozycjaZamowienie;
 import com.example.demo.Services.ServiceZamowienie;
 import com.example.demo.Zamowienie;
+import com.example.demo.ZamowienieDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,11 +33,12 @@ public class Maincontroller {
     }
 
 
+
+
     @GetMapping("/List/{id}")
-    public ResponseEntity<Zamowienie> zamowienieListId(@PathVariable Long id) {
-        Optional<Zamowienie> znalazlemID = serviceZamowienie.getIdZamowienie(id);
-        return znalazlemID.map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ZamowienieDTO zamowienieListId(@PathVariable Long id) {
+        return  serviceZamowienie.getIdZamowienie(id);
+
     }
 
     @CrossOrigin
@@ -69,6 +70,15 @@ public class Maincontroller {
         return ResponseEntity.ok(zamowienie);
     }
 
+
+    @GetMapping("/zamowienia")
+    public ResponseEntity<List<Zamowienie>> getAllZamowieniaWithPozycje() {
+        List<Zamowienie> zamowienia = serviceZamowienie.getAllZamowienie();
+
+
+
+        return ResponseEntity.ok(zamowienia);
+    }
 
 
 

@@ -3,12 +3,15 @@ package com.example.demo;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Entity
+@Table( name = "pozycja_zamowienie")
 public class PozycjaZamowienie {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,18 +28,11 @@ public class PozycjaZamowienie {
     private Double cena;
     @Column(name = "opis")
     private String opis;
-    @Column(name = "id_zamowienie")
-    private Integer id_zamowienie;
 
-    public PozycjaZamowienie(Integer id, String sposob_platnosci, String zamawiajacy, String status, Double cena, String opis, Integer id_zamowienie) {
-        this.id = id;
-        this.sposob_platnosci = sposob_platnosci;
-        this.zamawiajacy = zamawiajacy;
-        this.status = status;
-        this.cena = cena;
-        this.opis = opis;
-        this.id_zamowienie = id_zamowienie;
-    }
+
+    @ManyToOne
+    @JoinColumn(name = "id_zamowienia")
+    private Zamowienie zamowienie;
 
 
 

@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PozycjaZamowienieRepository extends JpaRepository<PozycjaZamowienie, Integer> {
 
-    @Query("SELECT z FROM PozycjaZamowienie z ORDER BY z.id DESC Limit 1 ")
-    PozycjaZamowienie findLastZamowienie();
+    @Query(value = "SELECT z FROM PozycjaZamowienie z ORDER BY z.id DESC Limit 1")
+    PozycjaZamowienie findLastPozycjaZamowienie();
 }

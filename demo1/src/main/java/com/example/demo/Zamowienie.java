@@ -1,11 +1,24 @@
 package com.example.demo;
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
+import java.util.Set;
+
+
+// rozbudowac klase op zamowienie ma wielepozycji
+// task1 zamiast query uzyc hibernata i mapowa
+// task 2
+//
 
 @NoArgsConstructor
 @Data
 @Entity
+@Table(name = "zamowienie")
+@AllArgsConstructor
 public class Zamowienie {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)//generuj automatycznie id
@@ -21,12 +34,10 @@ public class Zamowienie {
     private String typ;
 
 
-    public Zamowienie(long id, String link, String do_kiedy, String typ) {
-        this.id = id;
-        this.link = link;
-        this.do_kiedy = do_kiedy;
-        this.typ = typ;
-    }
+    @OneToMany(mappedBy = "zamowienie", fetch = FetchType.EAGER)
+    private List<PozycjaZamowienie> pozycje;
+
+
 
 
 }

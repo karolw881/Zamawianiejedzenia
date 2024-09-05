@@ -32,8 +32,7 @@ public class ServicePozycjaZamowienie {
     }
 
 
-
-
-
-
+    public PozycjaZamowienie getLastPozycjaZamowienie() {
+        return pozycjaZamowienierepository.findLastPozycjaZamowienie();
+    }
 }
