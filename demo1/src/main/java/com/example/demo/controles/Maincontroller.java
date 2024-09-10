@@ -1,20 +1,32 @@
 package com.example.demo.controles;
 
 
-import com.example.demo.Services.ServiceZamowienie;
-import com.example.demo.Zamowienie;
-import com.example.demo.ZamowienieDTO;
+import com.example.demo.DTO.PozycjaZamowienieDTO;
+import com.example.demo.Session.HibernateUtil;
+import com.example.demo.classes.PozycjaZamowienie;
+import com.example.demo.repo.ZamowienieRepository;
+import com.example.demo.services.ServiceZamowienie;
+import com.example.demo.classes.Zamowienie;
+import com.example.demo.DTO.ZamowienieDTO;
+import jakarta.persistence.Access;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
 @RequestMapping("/api")
-@RestController
+@Controller
 public class Maincontroller {
 
-    private final ServiceZamowienie serviceZamowienie; // definiuj Serwis w kontrolerze
+    @Autowired
+    private final ServiceZamowienie serviceZamowienie;
 
 
     public Maincontroller(ServiceZamowienie serviceZamowienie) {
@@ -23,6 +35,45 @@ public class Maincontroller {
     }
 
 
+    // zamowieni o id 502 wyciagnac z bazy
+    // tego dtos skonwertowacna encje
+    // do zamowieia o id 502 dodac encja któa skonwertowałęm
+    // i w tej encji ustawic zamowienie jakie wyciagniete zostało z bazy 502
+    // save na zamowieniu
+
+
+    // metoda dodaj pozycje zamiast zamowienie_x.getPozycje().add(pozycjaZamowienieDTOEntity );pozycjaZamowienieDTOEntity.setZamowienie(zamowienie_x);
+    // dwa razy niewyciagac z bazy id tylko  , metoda update robi to wszystko
+
+    @CrossOrigin(origins = {"*" } , allowedHeaders = {"*"})
+    @PostMapping("/formularz/{id}")
+    public ResponseEntity<?> dodajPozycjeDoZamowienia(@RequestBody PozycjaZamowienieDTO pozycjaZamowienieDTO) {
+
+       Zamowienie zamowienie_x = serviceZamowienie.findby(pozycjaZamowienieDTO.getId_zamowienia()).orElseThrow();
+
+
+
+        PozycjaZamowienie pozycjaZamowienieDTOEntity = pozycjaZamowienieDTO.toEntity();
+
+        pozycjaZamowienieDTOEntity.setZamowienie(zamowienie_x);
+        zamowienie_x.getPozycje().add(pozycjaZamowienieDTOEntity );
+
+
+       // serviceZamowienie.updateZamowienie(pozycjaZamowienieDTO.getId_zamowienia() ,zamowienie_x  );
+    serviceZamowienie.save(zamowienie_x );
+
+
+        return  ResponseEntity.ok("okok");
+
+
+    }
+
+    @CrossOrigin
+    @GetMapping("/LastOrder")
+    public ResponseEntity<ZamowienieDTO> getLastOrder() {
+        ZamowienieDTO zamowienieDTO = serviceZamowienie.getOstatnieZamowienie();
+        return ResponseEntity.ok(zamowienieDTO);
+    }
 
 
     @CrossOrigin
@@ -31,7 +82,6 @@ public class Maincontroller {
         List<Zamowienie> zamowienies = serviceZamowienie.getAllZamowienie();
         return ResponseEntity.ok(zamowienies);
     }
-
 
 
 
@@ -50,9 +100,9 @@ public class Maincontroller {
 
     @CrossOrigin
     @PostMapping("/save")
-    public ResponseEntity<Zamowienie> zamowieniaSave(@RequestBody Zamowienie zamowienie) {
-        Zamowienie savedZamowienie = serviceZamowienie.createZamowienie(zamowienie);
-        return ResponseEntity.ok(savedZamowienie);
+    public ResponseEntity<ZamowienieDTO> zamowieniaSave(@RequestBody Zamowienie zamowienie) {
+         serviceZamowienie.createZamowienie(zamowienie);
+        return ResponseEntity.ok(null);
     }
 
 
@@ -63,22 +113,16 @@ public class Maincontroller {
         return ResponseEntity.ok(updatedZamowienie);
     }
 
-    @CrossOrigin
-    @GetMapping("/LastOrder")
-    public ResponseEntity<Zamowienie> getLastOrder() {
-     Zamowienie zamowienie = serviceZamowienie.getLastZamowienie();
-        return ResponseEntity.ok(zamowienie);
-    }
+
 
 
     @GetMapping("/zamowienia")
     public ResponseEntity<List<Zamowienie>> getAllZamowieniaWithPozycje() {
         List<Zamowienie> zamowienia = serviceZamowienie.getAllZamowienie();
-
-
-
         return ResponseEntity.ok(zamowienia);
     }
+
+
 
 
 

@@ -1,12 +1,8 @@
-package com.example.demo;
+package com.example.demo.classes;
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
-import java.util.Set;
 
 
 // rozbudowac klase op zamowienie ma wielepozycji
@@ -15,13 +11,17 @@ import java.util.Set;
 //
 
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "zamowienie")
 @AllArgsConstructor
+@Builder
+
+
 public class Zamowienie {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)//generuj automatycznie id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "link")
@@ -34,7 +34,9 @@ public class Zamowienie {
     private String typ;
 
 
-    @OneToMany(mappedBy = "zamowienie", fetch = FetchType.EAGER)
+
+
+    @OneToMany(mappedBy = "zamowienie", fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     private List<PozycjaZamowienie> pozycje;
 
 

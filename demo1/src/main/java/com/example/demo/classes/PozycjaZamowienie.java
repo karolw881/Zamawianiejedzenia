@@ -1,41 +1,45 @@
-package com.example.demo;
+package com.example.demo.classes;
 
 
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
+@ToString
 @Entity
-@Table( name = "pozycja_zamowienie")
+@Table(name = "pozycja_zamowienie")
+@Builder
+
 public class PozycjaZamowienie {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonProperty("id_zamowienia")
     private Integer id;
+    @Column(name = "sposob_platnosci" )
 
-
-    @Column(name = "sposob_platnosci")
     private String sposob_platnosci;
-    @Column(name = "zamawiajacy")
+    @Column(name = "zamawiajacy" )
+
     private String zamawiajacy;
     @Column(name = "status")
+
     private String status;
-    @Column(name = "cena")
+    @Column(name = "cena" )
     private Double cena;
-    @Column(name = "opis")
+    @Column(name = "opis" )
+
     private String opis;
+
 
 
     @ManyToOne
     @JoinColumn(name = "id_zamowienia")
     private Zamowienie zamowienie;
-
-
-
 
 }
 
