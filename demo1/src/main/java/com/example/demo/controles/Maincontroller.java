@@ -46,16 +46,17 @@ public class Maincontroller {
     @CrossOrigin(origins = {"*" } , allowedHeaders = {"*"})
     @PostMapping("/formularz/{id}")
     public ResponseEntity<?> dodajPozycjeDoZamowienia(@RequestBody PozycjaZamowienieDTO pozycjaZamowienieDTO) {
+        Zamowienie zamowienie_x = serviceZamowienie.findby(pozycjaZamowienieDTO.getId_zamowienia()).orElseThrow();
 
-       Zamowienie zamowienie_x = serviceZamowienie.findby(pozycjaZamowienieDTO.getId_zamowienia()).orElseThrow();
         PozycjaZamowienie pozycjaZamowienieDTOEntity = pozycjaZamowienieDTO.toEntity();
+
         pozycjaZamowienieDTOEntity.setZamowienie(zamowienie_x);
-       // serviceZamowienie.dodajPozycje(zamowienie_x,pozycjaZamowienieDTO);   poprawbo nie działawten sposob
-        zamowienie_x.getPozycje().add(pozycjaZamowienieDTOEntity );
 
-       // serviceZamowienie.updateZamowienie(pozycjaZamowienieDTO.getId_zamowienia() ,zamowienie_x  );
+        serviceZamowienie.dodajPozycje(zamowienie_x,pozycjaZamowienieDTO);
+
+        // serviceZamowienie.updateZamowienie(pozycjaZamowienieDTO.getId_zamowienia() ,zamowienie_x  );
+
         serviceZamowienie.save(zamowienie_x );
-
 
         return  ResponseEntity.ok("okok");
 

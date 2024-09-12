@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.DTO.PozycjaZamowienieDTO;
+import com.example.demo.classes.PozycjaZamowienie;
 import com.example.demo.classes.Zamowienie;
 import com.example.demo.DTO.ZamowienieDTO;
 import com.example.demo.repo.ZamowienieRepository;
@@ -18,7 +19,7 @@ import java.util.Optional;
 public class ServiceZamowienie {
 
     @Autowired
-    private final ZamowienieRepository zamowienieRepository; // definiuj repozytorium
+    private final ZamowienieRepository zamowienieRepository;
 
     public ServiceZamowienie(ZamowienieRepository zamowienieRepository) {
         this.zamowienieRepository = zamowienieRepository;
@@ -62,14 +63,16 @@ public class ServiceZamowienie {
         }
     }
 
-    // dokoncz
-
-
 
     public void dodajPozycje(Zamowienie zamowienie, PozycjaZamowienieDTO pozycjaZamowienieDTO) {
-        zamowienie.getPozycje().add(pozycjaZamowienieDTO.toEntity());
-
+        PozycjaZamowienie pozycjaZamowienieEntity = pozycjaZamowienieDTO.toEntity(); // Konwersja DTO do encji
+        pozycjaZamowienieEntity.setZamowienie(zamowienie); // Ustawienie referencji do zamówienia
+        zamowienie.getPozycje().add(pozycjaZamowienieEntity); // Dodanie pozycji do listy pozycji zamówienia
+        // Nie ma potrzeby wywoływać metody save tutaj, ponieważ jest to już robione w kontrolerze
     }
+
+
+
 
 
 
