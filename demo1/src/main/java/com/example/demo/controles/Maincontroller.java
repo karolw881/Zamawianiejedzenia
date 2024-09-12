@@ -22,10 +22,8 @@ import java.util.List;
 import java.util.Optional;
 
 @RequestMapping("/api")
-@Controller
+@RestController
 public class Maincontroller {
-
-    @Autowired
     private final ServiceZamowienie serviceZamowienie;
 
 
@@ -50,23 +48,20 @@ public class Maincontroller {
     public ResponseEntity<?> dodajPozycjeDoZamowienia(@RequestBody PozycjaZamowienieDTO pozycjaZamowienieDTO) {
 
        Zamowienie zamowienie_x = serviceZamowienie.findby(pozycjaZamowienieDTO.getId_zamowienia()).orElseThrow();
-
-
-
         PozycjaZamowienie pozycjaZamowienieDTOEntity = pozycjaZamowienieDTO.toEntity();
-
         pozycjaZamowienieDTOEntity.setZamowienie(zamowienie_x);
+       // serviceZamowienie.dodajPozycje(zamowienie_x,pozycjaZamowienieDTO);   poprawbo nie działawten sposob
         zamowienie_x.getPozycje().add(pozycjaZamowienieDTOEntity );
 
-
        // serviceZamowienie.updateZamowienie(pozycjaZamowienieDTO.getId_zamowienia() ,zamowienie_x  );
-    serviceZamowienie.save(zamowienie_x );
+        serviceZamowienie.save(zamowienie_x );
 
 
         return  ResponseEntity.ok("okok");
 
 
     }
+
 
     @CrossOrigin
     @GetMapping("/LastOrder")
@@ -98,12 +93,20 @@ public class Maincontroller {
         return ResponseEntity.ok("Zamowienie o ID " + id + " zostało usunięte.");
     }
 
-    @CrossOrigin
+    @CrossOrigin(origins = {"*" } , allowedHeaders = {"*"})
     @PostMapping("/save")
-    public ResponseEntity<ZamowienieDTO> zamowieniaSave(@RequestBody Zamowienie zamowienie) {
-         serviceZamowienie.createZamowienie(zamowienie);
-        return ResponseEntity.ok(null);
+    public ZamowienieDTO zamowieniaSave(@RequestBody Zamowienie zamowienie) {
+         ZamowienieDTO zamowienieDTO = serviceZamowienie.createZamowienie(zamowienie);
+        return zamowienieDTO;
     }
+
+
+
+
+
+
+
+
 
 
     @CrossOrigin
