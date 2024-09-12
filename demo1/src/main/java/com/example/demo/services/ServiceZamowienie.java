@@ -46,6 +46,8 @@ public class ServiceZamowienie {
 
     }
 
+
+
     public Zamowienie updateZamowienie(Long id, Zamowienie pZamowienie) {
         Optional<Zamowienie> oZamowienie = zamowienieRepository.findById(id);
         if (oZamowienie.isPresent()) {
@@ -59,6 +61,16 @@ public class ServiceZamowienie {
             throw new RuntimeException("Zamówienie o ID " + id + " nie zostało znalezione.");
         }
     }
+
+    // dokoncz
+
+
+
+    public void dodajPozycje(Zamowienie zamowienie, PozycjaZamowienieDTO pozycjaZamowienieDTO) {
+        zamowienie.getPozycje().add(pozycjaZamowienieDTO.toEntity());
+
+    }
+
 
 
 

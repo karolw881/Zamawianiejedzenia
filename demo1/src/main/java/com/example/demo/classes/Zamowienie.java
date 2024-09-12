@@ -2,6 +2,7 @@ package com.example.demo.classes;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -37,7 +38,7 @@ public class Zamowienie {
 
 
     @OneToMany(mappedBy = "zamowienie", fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-    private List<PozycjaZamowienie> pozycje;
+    private List<PozycjaZamowienie> pozycje = new ArrayList<>();
 
 
 
