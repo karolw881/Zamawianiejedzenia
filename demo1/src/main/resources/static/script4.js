@@ -20,7 +20,7 @@ function displayDataInTable(data) {
 }
 
 function fetchDataAndDisplay() {
-    fetch('http://localhost:8082/api/LastOrder')
+    fetch('http://localhost/api/LastOrder')
         .then(response => {
             if (!response.ok) {
                 return response.text().then(text => {
@@ -99,7 +99,7 @@ function zatwierdz() {
 				console.log(pozycjaZamowienie);
 				
                 // Wysłanie danych do serwera za pomocą fetch
-                fetch(`http://localhost:8082/api/formularz/${id}`, {
+                fetch(`http://localhost/api/formularz/${id}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -125,7 +125,7 @@ function zatwierdz() {
 
 
 function zwrocIdzamowienia() {
-    return fetch('http://localhost:8082/api/LastOrder')
+    return fetch('http://localhost/api/LastOrder')
         .then(response => {
             if (!response.ok) {
                 return response.text().then(text => {
@@ -168,7 +168,7 @@ function addOrder() {
    // console.log(Zamowienie); // Wyświetlenie danych w konsoli do sprawdzenia
 
     // Wysłanie danych do serwera za pomocą fetch
-    fetch('http://localhost:8082/api/save', {
+    fetch('http://localhost/api/save', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
