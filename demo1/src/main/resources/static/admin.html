@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <title>Zamowienia</title>
+    <meta charset="UTF-8">
+	<link href="../../../../../../../../../xampp/htdocs/szama/style2.css" rel="stylesheet">
+	<META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">  
+</head>
+<body>
+
+
+
+    <div class="container">
+
+		
+		<header>
+		
+				<div class="up">
+  <a href="http://szybkaszama.pl">Strona Głowna</a>
+  <a href="http://szybkaszama.pl/admin.html">Admin</a>
+  
+</div>
+            <h1>Szybka Szama </h1>
+            <div class="url-bar">
+                <span>https://</span>
+                <div class="switch">
+                    <input type="checkbox" id="toggle">
+                    <label for="toggle"></label>
+                </div>
+            </div>
+        </header>
+        
+        <main>
+            <section class="selection-section">
+                <div class="info-box">
+                    <h2>Dzisiaj wybraliśmy:</h2>
+                    <a href="#">Link to choosen food website</a>
+                </div>
+
+                <div class="order-info">
+                    <div class="timer">
+                        <p><strong>Czas upłynie o:</strong> 10:00</p>
+                        <p><strong>Zostało:</strong> 21 min 30 sec</p>
+                    </div>
+                    <div class="order-status">
+                        <p><strong>Twoje zamówienie:</strong> przed złożeniem</p>
+                    </div>
+                </div>
+            </section>
+  
+
+
+<form id="orderForm2">
+  <div class="typ">
+    <p>Jaka opcja kupna?</p>
+    <input type="radio" id="pyszne" name="typ" value="pyszne" />
+    <label for="pyszne">pyszne.pl</label><br />
+    <input type="radio" id="piechota" name="typ" value="piechota" />
+    <label for="piechota">przejście się na piechotę do barku</label><br />
+    <input type="radio" id="telefon" name="typ" value="telefon" />
+    <label for="telefon">telefonicznie</label>
+  </div>
+
+  <label for="doKtorej">Do której można składać zamówienie:</label>
+  <textarea name="do_kiedy" id="do_kiedy"></textarea>
+
+  <label for="link">Link do restauracji:</label>
+  <textarea name="link" id="link" type="text"> </textarea>
+
+  <button type="submit-btn2" id="submit-btn2">Złóż</button>
+</form>
+	
+
+<h1>Dane zamówienia</h1>
+            <div id="dataDisplay"></div>
+			
+			   <footer>
+            <button id="dodaj-pozycje3" >Dodaj pozycje</button>
+        </footer>
+	
+
+
+    <script src="../../../../../../../../../xampp/htdocs/szama/script4.js"></script>
+</body>
+</html>
