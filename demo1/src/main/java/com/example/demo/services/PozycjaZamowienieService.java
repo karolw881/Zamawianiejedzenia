@@ -8,11 +8,11 @@ import java.util.List;
 
 @Service
 
-public class ServicePozycjaZamowienie {
+public class PozycjaZamowienieService {
 
     private final PozycjaZamowienieRepository pozycjaZamowienierepository;
 
-    public ServicePozycjaZamowienie(PozycjaZamowienieRepository pozycjaZamowienierepository) {
+    public PozycjaZamowienieService(PozycjaZamowienieRepository pozycjaZamowienierepository) {
         this.pozycjaZamowienierepository = pozycjaZamowienierepository;
     }
 

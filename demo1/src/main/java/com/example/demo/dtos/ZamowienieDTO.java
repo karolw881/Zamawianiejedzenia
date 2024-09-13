@@ -1,4 +1,4 @@
-package com.example.demo.DTO;
+package com.example.demo.dtos;
 import com.example.demo.classes.PozycjaZamowienie;
 import com.example.demo.classes.Zamowienie;
 import lombok.*;

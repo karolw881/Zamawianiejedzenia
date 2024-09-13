@@ -1,9 +1,9 @@
 package com.example.demo.services;
 
-import com.example.demo.DTO.PozycjaZamowienieDTO;
+import com.example.demo.dtos.PozycjaZamowienieDTO;
 import com.example.demo.classes.PozycjaZamowienie;
 import com.example.demo.classes.Zamowienie;
-import com.example.demo.DTO.ZamowienieDTO;
+import com.example.demo.dtos.ZamowienieDTO;
 import com.example.demo.repo.ZamowienieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,12 +16,12 @@ import java.util.Optional;
 @Service
 @Transactional
 @Component
-public class ServiceZamowienie {
+public class ZamowienieService {
 
     @Autowired
     private final ZamowienieRepository zamowienieRepository;
 
-    public ServiceZamowienie(ZamowienieRepository zamowienieRepository) {
+    public ZamowienieService(ZamowienieRepository zamowienieRepository) {
         this.zamowienieRepository = zamowienieRepository;
     }
 

@@ -1,34 +1,24 @@
 package com.example.demo.controles;
 
 
-import com.example.demo.DTO.PozycjaZamowienieDTO;
-import com.example.demo.Session.HibernateUtil;
+import com.example.demo.dtos.PozycjaZamowienieDTO;
 import com.example.demo.classes.PozycjaZamowienie;
-import com.example.demo.repo.ZamowienieRepository;
-import com.example.demo.services.ServiceZamowienie;
+import com.example.demo.services.ZamowienieService;
 import com.example.demo.classes.Zamowienie;
-import com.example.demo.DTO.ZamowienieDTO;
-import jakarta.persistence.Access;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo.dtos.ZamowienieDTO;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RequestMapping("/api")
 @RestController
 public class Maincontroller {
-    private final ServiceZamowienie serviceZamowienie;
+    private final ZamowienieService zamowienieService;
 
 
-    public Maincontroller(ServiceZamowienie serviceZamowienie) {
-        this.serviceZamowienie = serviceZamowienie;
+    public Maincontroller(ZamowienieService zamowienieService) {
+        this.zamowienieService = zamowienieService;
 
     }
 
@@ -46,17 +36,17 @@ public class Maincontroller {
     @CrossOrigin(origins = {"*" } , allowedHeaders = {"*"})
     @PostMapping("/formularz/{id}")
     public ResponseEntity<?> dodajPozycjeDoZamowienia(@RequestBody PozycjaZamowienieDTO pozycjaZamowienieDTO) {
-        Zamowienie zamowienie_x = serviceZamowienie.findby(pozycjaZamowienieDTO.getId_zamowienia()).orElseThrow();
+        Zamowienie zamowienie_x = zamowienieService.findby(pozycjaZamowienieDTO.getId_zamowienia()).orElseThrow();
 
         PozycjaZamowienie pozycjaZamowienieDTOEntity = pozycjaZamowienieDTO.toEntity();
 
         pozycjaZamowienieDTOEntity.setZamowienie(zamowienie_x);
 
-        serviceZamowienie.dodajPozycje(zamowienie_x,pozycjaZamowienieDTO);
+        zamowienieService.dodajPozycje(zamowienie_x,pozycjaZamowienieDTO);
 
-        // serviceZamowienie.updateZamowienie(pozycjaZamowienieDTO.getId_zamowienia() ,zamowienie_x  );
+        // serviceZamowienie.updateZamowienie(pozycjaZamowienieDTO.getId_zamowienia() ,zamowienie_x  ); do popraw !!!
 
-        serviceZamowienie.save(zamowienie_x );
+        zamowienieService.save(zamowienie_x );
 
         return  ResponseEntity.ok("okok");
 
@@ -65,39 +55,39 @@ public class Maincontroller {
 
 
     @CrossOrigin
-    @GetMapping("/LastOrder")
+    @GetMapping("/lastOrder")
     public ResponseEntity<ZamowienieDTO> getLastOrder() {
-        ZamowienieDTO zamowienieDTO = serviceZamowienie.getOstatnieZamowienie();
+        ZamowienieDTO zamowienieDTO = zamowienieService.getOstatnieZamowienie();
         return ResponseEntity.ok(zamowienieDTO);
     }
 
 
     @CrossOrigin
-    @GetMapping("/List")
+    @GetMapping("/list")
     public ResponseEntity<List<Zamowienie>> zamowieniaList() {
-        List<Zamowienie> zamowienies = serviceZamowienie.getAllZamowienie();
+        List<Zamowienie> zamowienies = zamowienieService.getAllZamowienie();
         return ResponseEntity.ok(zamowienies);
     }
 
 
 
-    @GetMapping("/List/{id}")
+    @GetMapping("/list/{id}")
     public ZamowienieDTO zamowienieListId(@PathVariable Long id) {
-        return  serviceZamowienie.getIdZamowienie(id);
+        return  zamowienieService.getIdZamowienie(id);
 
     }
 
     @CrossOrigin
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteZamowienie(@PathVariable Long id) {
-        serviceZamowienie.delete(id);
+        zamowienieService.delete(id);
         return ResponseEntity.ok("Zamowienie o ID " + id + " zostało usunięte.");
     }
 
     @CrossOrigin(origins = {"*" } , allowedHeaders = {"*"})
     @PostMapping("/save")
     public ZamowienieDTO zamowieniaSave(@RequestBody Zamowienie zamowienie) {
-         ZamowienieDTO zamowienieDTO = serviceZamowienie.createZamowienie(zamowienie);
+         ZamowienieDTO zamowienieDTO = zamowienieService.createZamowienie(zamowienie);
         return zamowienieDTO;
     }
 
@@ -113,7 +103,7 @@ public class Maincontroller {
     @CrossOrigin
     @PutMapping("/update/{id}")
     public ResponseEntity<Zamowienie> updateZamowienie(@PathVariable Long id, @RequestBody Zamowienie zamowienie) {
-        Zamowienie updatedZamowienie = serviceZamowienie.updateZamowienie(id, zamowienie);
+        Zamowienie updatedZamowienie = zamowienieService.updateZamowienie(id, zamowienie);
         return ResponseEntity.ok(updatedZamowienie);
     }
 
@@ -122,7 +112,7 @@ public class Maincontroller {
 
     @GetMapping("/zamowienia")
     public ResponseEntity<List<Zamowienie>> getAllZamowieniaWithPozycje() {
-        List<Zamowienie> zamowienia = serviceZamowienie.getAllZamowienie();
+        List<Zamowienie> zamowienia = zamowienieService.getAllZamowienie();
         return ResponseEntity.ok(zamowienia);
     }
 
