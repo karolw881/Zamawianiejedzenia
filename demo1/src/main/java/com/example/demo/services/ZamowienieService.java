@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -33,6 +34,7 @@ public class ZamowienieService {
                 .typ(z.getTyp())
                 .link(z.getLink())
                 .do_kiedy(z.getDo_kiedy())
+                .data(z.getData())
                 .pozycje(z.getPozycje().stream()
                         .map(p -> PozycjaZamowienieDTO.builder()
                                 .id(p.getId())
@@ -106,15 +108,23 @@ public class ZamowienieService {
                 .build()).orElse(null);
     }
 
-    public Optional<Zamowienie> findby(Long id){
-       return zamowienieRepository.findById((id));
+    public Optional<Zamowienie> findby(String id){
+       return zamowienieRepository.findById(UUID.fromString(id));
     }
+
+    /*
+    public Optional<Zamowienie> findby(UUID id){
+        return zamowienieRepository.findById(Long.valueOf(String.valueOf(id)));
+    }
+
+     */
+
 
 
 
     public ZamowienieDTO getOstatnieZamowienie() {
 
-        return zamowienieRepository.findFirstByOrderByIdDesc().map(z -> ZamowienieDTO.builder()
+        return zamowienieRepository.findFirstByOrderByDataDesc().map(z -> ZamowienieDTO.builder()
                 .id(z.getId())
                 .typ(z.getTyp())
                 .link(z.getLink())

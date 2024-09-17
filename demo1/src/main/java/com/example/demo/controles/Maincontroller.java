@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RequestMapping("/api")
 @RestController
@@ -33,24 +34,22 @@ public class Maincontroller {
     // metoda dodaj pozycje zamiast zamowienie_x.getPozycje().add(pozycjaZamowienieDTOEntity );pozycjaZamowienieDTOEntity.setZamowienie(zamowienie_x);
     // dwa razy niewyciagac z bazy id tylko  , metoda update robi to wszystko
 
-    @CrossOrigin(origins = {"*" } , allowedHeaders = {"*"})
+    @CrossOrigin(origins = {"*"}, allowedHeaders = {"*"})
     @PostMapping("/formularz/{id}")
-    public ResponseEntity<?> dodajPozycjeDoZamowienia(@RequestBody PozycjaZamowienieDTO pozycjaZamowienieDTO) {
-        Zamowienie zamowienie_x = zamowienieService.findby(pozycjaZamowienieDTO.getId_zamowienia()).orElseThrow();
+    public ResponseEntity<?> dodajPozycjeDoZamowienia(@PathVariable String id, @RequestBody PozycjaZamowienieDTO pozycjaZamowienieDTO) {
+        Zamowienie zamowienie_x = zamowienieService.findby(id).orElseThrow();
 
         PozycjaZamowienie pozycjaZamowienieDTOEntity = pozycjaZamowienieDTO.toEntity();
-
         pozycjaZamowienieDTOEntity.setZamowienie(zamowienie_x);
 
-        zamowienieService.dodajPozycje(zamowienie_x,pozycjaZamowienieDTO);
+        zamowienieService.dodajPozycje(zamowienie_x, pozycjaZamowienieDTO);
 
-        // serviceZamowienie.updateZamowienie(pozycjaZamowienieDTO.getId_zamowienia() ,zamowienie_x  ); do popraw !!!
+        // Uncomment and fix this line if needed
+        // serviceZamowienie.updateZamowienie(id, zamowienie_x);
 
-        zamowienieService.save(zamowienie_x );
+        zamowienieService.save(zamowienie_x);
 
-        return  ResponseEntity.ok("okok");
-
-
+        return ResponseEntity.ok("okok");
     }
 
 

@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="Pragma" content="no-cache">
     <link href="style2.css" rel="stylesheet">
+    <link rel="shortcut icon" href="#" />
 </head>
 <body>
 <div class="container">
@@ -14,29 +15,23 @@
             <a href="http://szybkaszama.pl/admin.html">Admin</a>
         </div>
         <h1>Szybka Szama</h1>
-        <div class="url-bar">
-            <span>https://</span>
-            <div class="switch">
-                <input type="checkbox" id="toggle">
-                <label for="toggle"></label>
-            </div>
-        </div>
+
     </header>
 
     <main>
         <section class="selection-section">
             <div class="info-box">
                 <h2>Dzisiaj wybraliśmy:</h2>
-                <a href="#">Link do wybranej restauracji</a>
+                <a href="#" id="food-link">Link to choosen food website</a>
             </div>
 
             <div class="order-info">
                 <div class="timer">
-                    <p><strong>Czas upłynie o:</strong> 10:00</p>
-                    <p><strong>Zostało:</strong> 21 min 30 sec</p>
+                    <p><strong>Czas upłynie o:</strong> <span id="do-kiedy">10:00</span></p>
+                    <p><strong>Zostało:</strong> <span id="czas-pozostaly">21 min 30 sec</span></p>
                 </div>
                 <div class="order-status">
-                    <p><strong>Twoje zamówienie:</strong> przed złożeniem</p>
+                    <p><strong>Twoje zamówienie:</strong> <span id="status-zamowienia">przed złożeniem</span></p>
                 </div>
             </div>
         </section>

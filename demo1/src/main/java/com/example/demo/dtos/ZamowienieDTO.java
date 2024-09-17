@@ -3,7 +3,9 @@ import com.example.demo.classes.PozycjaZamowienie;
 import com.example.demo.classes.Zamowienie;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 
@@ -16,11 +18,12 @@ import java.util.stream.Collectors;
 @Builder
 public class ZamowienieDTO {
 
-    private Long id;
+    private UUID id;
     private String link;
     private String do_kiedy;
     private String typ;
     private List<PozycjaZamowienieDTO> pozycje;
+    private LocalDateTime data;
 
 
     public Zamowienie toEntity(){
@@ -31,6 +34,7 @@ public class ZamowienieDTO {
                 .link(this.link)
                 .do_kiedy(this.do_kiedy)
                 .typ(this.typ)
+                .data(this.data)
                 .pozycje(pozycjaZamowienies)
                 .build();
 

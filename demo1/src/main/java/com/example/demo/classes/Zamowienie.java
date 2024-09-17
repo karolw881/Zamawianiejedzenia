@@ -2,8 +2,18 @@ package com.example.demo.classes;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+
+import org.hibernate.annotations.Type;
+import org.springframework.format.annotation.DateTimeFormat;
+
+// ...
+
+
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 
 // rozbudowac klase op zamowienie ma wielepozycji
@@ -22,8 +32,10 @@ import java.util.List;
 
 public class Zamowienie {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    //@Type(type="pg-uuid")
+    @Column(name = "id", columnDefinition = "BINARY(16)")
+    private UUID id;
 
     @Column(name = "link")
     private String link;
@@ -34,13 +46,26 @@ public class Zamowienie {
     @Column(name = "typ")
     private String typ;
 
+    @Column(name = "data")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDateTime data;
 
 
 
     @OneToMany(mappedBy = "zamowienie", fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     private List<PozycjaZamowienie> pozycje = new ArrayList<>();
 
+    @PrePersist
+    protected void onCreate() {
+        if (id == null) {
+            id = UUID.randomUUID();
+        }
 
+        if(data == null){
+            data = LocalDateTime.now();
+
+        }
+    }
 
 
 }

@@ -6,6 +6,8 @@ import com.example.demo.classes.PozycjaZamowienie;
 import lombok.*;
 import lombok.extern.jackson.Jacksonized;
 
+import java.util.UUID;
+
 @Value
 @Builder
 @Jacksonized
@@ -17,7 +19,7 @@ public class PozycjaZamowienieDTO {
     private String status;
     private Double cena;
     private String opis;
-    private Long id_zamowienia;
+    private UUID id_zamowienia;
 
 
 
