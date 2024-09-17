@@ -1,12 +1,31 @@
+function logError(message, error){
+    console.log(`${message}`,error);
+}
+
+
+
+
+function postData(url,data){
+    return  fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+        .then(handleFetchResponse)
+}
+
+
+
 function displayDataInTable(data) {
     const container = document.getElementById('dataDisplay');
     if (!container) {
-        console.error('Element with id "dataDisplay" not found.');
+        logError('Element with id "dataDisplay" not found.', new Error('Container not found'));
         return;
     }
 
     let tableHTML = "<table border='1'><thead><tr><th>ID</th><th>Opis</th><th>Cena</th><th>Status</th><th>zamawiajacy</th></tr></thead><tbody>";
-    // Pętla po pozycjach zamówienia
     data.pozycje.forEach(pozycja => {
         tableHTML += `<tr>
                         <td>${pozycja.id}</td>
@@ -17,13 +36,11 @@ function displayDataInTable(data) {
                       </tr>`;
     });
     tableHTML += "</tbody></table>";
-
-    // Wstaw tabelę do diva
     container.innerHTML = tableHTML;
 }
 
 function fetchDataAndDisplay() {
-    fetch('http://localhost:80/api/lastOrder')
+    fetch('http://localhost/api/lastOrder')
         .then(response => {
             if (!response.ok) {
                 return response.text().then(text => {
@@ -34,12 +51,12 @@ function fetchDataAndDisplay() {
         })
         .then(data => {
             console.log('Data received:', data);
-            displayDataInTable(data);  // Wywołanie funkcji do wyświetlenia danych w tabeli
+            displayDataInTable(data);
             updateOrderInfo(data);
-            gotoformularz(data);  // Call to set up the "Dodaj pozycje" button
+            gotoformularz(data);
         })
         .catch(error => {
-            console.error('There was a problem with the fetch operation:', error);
+            logError('There was a problem with the fetch operation:', error);
         });
 }
 
@@ -61,51 +78,22 @@ function updateOrderInfo(data) {
     }
 }
 
-function gotoformularz(data) {
-    const dodajPozycjeBtn = document.getElementById('dodaj-pozycje3');
-    if (dodajPozycjeBtn) {
-        dodajPozycjeBtn.addEventListener('click', function() {
-            const id = data.id;  // pobierz id zamowienia
-            window.location.href = `/formularz.html#id=${id}`;  // Przenosi użytkownika na stronę formularz.html z dynamicznym id_zamowienia
-        });
-    } else {
-        console.error('Element with id "dodaj-pozycje" not found.');
-    }
-}
-
-
-
-
-// Define the zatwierdz function that listens for the submit button click
 function zatwierdz() {
-
-
-
-
     const submitButton = document.getElementById('submit-btn');
     if (submitButton) {
         submitButton.addEventListener('click', function(event) {
-            event.preventDefault();  // Prevent the default form submission behavior
+            event.preventDefault();
 
-            // Pobieranie wartości z formularza
+
             const zamawiajacy = document.getElementById('zamawiajacy').value;
             const opis = document.getElementById('opis').value;
             const cena = document.getElementById('cenax').value;
-
-            console.log(cena);
-
-
-
-
-
-
-
-            // Pobierz ID zamówienia z URL (assuming ID is passed via URL fragment after #)
-            const urlParams = new URLSearchParams(window.location.hash.substring(1));
+            const urlParams = new URLSearchParams(window.location.hash.substring(1));     // Pobierz ID zamówienia z URL (PO #)
             const id = urlParams.get('id');
 
+            // Tworzenie obiektu danych do wysłania
             if (id) {
-                // Tworzenie obiektu danych do wysłania
+
                 const pozycjaZamowienie = {
                     zamawiajacy: zamawiajacy,
                     opis: opis,
@@ -118,7 +106,7 @@ function zatwierdz() {
                 console.log(pozycjaZamowienie);
 
                 // Wysłanie danych do serwera za pomocą fetch
-                fetch('http://localhost:80/api/formularz/${id}', {
+                fetch(`http://localhost:80/api/formularz/${id}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -140,25 +128,22 @@ function zatwierdz() {
         console.error('submit-btn element not found.');
     }
 }
+function gotoformularz(data) {
+    const dodajPozycjeBtn = document.getElementById('dodaj-pozycje3');
+    if (dodajPozycjeBtn) {
+        dodajPozycjeBtn.removeEventListener('click',handleClick)
+        dodajPozycjeBtn.addEventListener('click', handleClick );
 
+        function handleClick(){
+            const id = data.id;  // pobierz id zamowienia
+            window.location.href = `/formularz.html#id=${id}`;
 
+        }
 
-function zwrocIdzamowienia() {
-    return fetch('http://localhost:80/api/lastOrder')
-        .then(response => {
-            if (!response.ok) {
-                return response.text().then(text => {
-                    throw new Error(`Error ${response.status}: ${text}`);
-                });
-            }
-            return response.json();
-        })
-        .then(data => {
-            return data.id; // Zakładamy, że 'id' jest w obiekcie JSON
-        })
-        .catch(error => {
-            console.error('Wystąpił błąd:', error);
-        });
+    }
+    else {
+        logError('Element with id "dodaj-pozycje3" not found.', new Error('Button not found'));
+    }
 }
 
 
@@ -211,15 +196,14 @@ function addOrder() {
     });
 }
 
-
 // Pobierz dane po załadowaniu strony
 window.onload = function() {
-    // Only fetch data and display it if the page is index.html
+
     if (document.getElementById('dataDisplay')) {
         fetchDataAndDisplay();
     }
 
-    // Call zatwierdz only if we are on formularz.html
+
     if (window.location.pathname.includes('formularz.html')) {
         zatwierdz();
     }
@@ -233,7 +217,3 @@ window.onload = function() {
 
 
 };
-
-
-
-
