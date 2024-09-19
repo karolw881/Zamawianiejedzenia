@@ -112,6 +112,8 @@ public class ZamowienieService {
        return zamowienieRepository.findById(UUID.fromString(id));
     }
 
+
+
     /*
     public Optional<Zamowienie> findby(UUID id){
         return zamowienieRepository.findById(Long.valueOf(String.valueOf(id)));
@@ -155,6 +157,7 @@ public class ZamowienieService {
     public List<Zamowienie> getAllUsers() {
         return zamowienieRepository.findAll();
     }
+
 
 
 }

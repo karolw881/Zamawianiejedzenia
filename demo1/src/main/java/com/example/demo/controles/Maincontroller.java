@@ -44,13 +44,24 @@ public class Maincontroller {
 
         zamowienieService.dodajPozycje(zamowienie_x, pozycjaZamowienieDTO);
 
-        // Uncomment and fix this line if needed
         // serviceZamowienie.updateZamowienie(id, zamowienie_x);
 
         zamowienieService.save(zamowienie_x);
 
         return ResponseEntity.ok("okok");
     }
+
+
+
+    @CrossOrigin(origins = {"*"}, allowedHeaders = {"*"})
+    @GetMapping("/zamowienie/{uuid}")
+    public  ResponseEntity<ZamowienieDTO> getCurrentZamowienie(@PathVariable String uuid ){
+        Zamowienie zamowienie = zamowienieService.findby(uuid).orElseThrow();
+
+        return ResponseEntity.ok(ZamowienieDTO.toDto(zamowienie));
+    }
+
+
 
 
     @CrossOrigin
@@ -61,12 +72,7 @@ public class Maincontroller {
     }
 
 
-    @CrossOrigin
-    @GetMapping("/list")
-    public ResponseEntity<List<Zamowienie>> zamowieniaList() {
-        List<Zamowienie> zamowienies = zamowienieService.getAllZamowienie();
-        return ResponseEntity.ok(zamowienies);
-    }
+
 
 
 
@@ -91,14 +97,6 @@ public class Maincontroller {
     }
 
 
-
-
-
-
-
-
-
-
     @CrossOrigin
     @PutMapping("/update/{id}")
     public ResponseEntity<Zamowienie> updateZamowienie(@PathVariable Long id, @RequestBody Zamowienie zamowienie) {
@@ -108,15 +106,11 @@ public class Maincontroller {
 
 
 
-
-    @GetMapping("/zamowienia")
+   @GetMapping("/zamowienia")
     public ResponseEntity<List<Zamowienie>> getAllZamowieniaWithPozycje() {
         List<Zamowienie> zamowienia = zamowienieService.getAllZamowienie();
         return ResponseEntity.ok(zamowienia);
     }
-
-
-
 
 
 }

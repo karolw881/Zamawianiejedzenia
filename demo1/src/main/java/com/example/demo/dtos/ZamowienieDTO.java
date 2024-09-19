@@ -40,6 +40,17 @@ public class ZamowienieDTO {
 
     }
 
+    // Mapstruct
+    public static ZamowienieDTO toDto(Zamowienie zamowienie){
+        return ZamowienieDTO.builder()
+                .id(zamowienie.getId())
+                .data(zamowienie.getData())
+                .typ(zamowienie.getDo_kiedy())
+                .pozycje(zamowienie.getPozycje().stream().map(PozycjaZamowienieDTO::toDto).collect(Collectors.toList()))
+                .link(zamowienie.getLink())
+                .do_kiedy(zamowienie.getDo_kiedy()).build();
+    }
+
 
 
 

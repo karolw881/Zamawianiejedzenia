@@ -1,20 +1,33 @@
 <!DOCTYPE html>
 <html lang="pl">
+
 <head>
-    <title>Pozycja Zamowienia</title>
     <meta charset="UTF-8">
-    <link href="style2.css" rel="stylesheet">
-    <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ordering Food</title>
+    <link rel="stylesheet" href="style2.css">
     <link rel="shortcut icon" href="#" />
+    <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+
 </head>
+
+
+
+
 <body>
+
+
 <div class="container">
+
+
     <header>
+
         <div class="up">
-            <a href="http://szybkaszama.pl">Strona Główna</a>
+            <a href="http://szybkaszama.pl">Strona Głowna</a>
             <a href="http://szybkaszama.pl/admin.html">Admin</a>
+
         </div>
-        <h1>Szybka Szama</h1>
+        <h1>Szybka Szama </h1>
 
     </header>
 
@@ -36,24 +49,16 @@
             </div>
         </section>
 
-        <form id="orderForm" method="post">
-            <label for="zamawiajacy">Zamawiający</label>
-            <textarea name="zamawiajacy" id="zamawiajacy"></textarea>
-
-            <label for="opis">Opis</label>
-            <textarea name="opis" id="opis"></textarea>
-
-            <label for="cenax">Cena</label>
-            <textarea name="cenax" id="cenax"></textarea>
-
-            <button type="submit" id="submit-btn">Złóż</button>
-        </form>
+        <h1>Dane zamówienia</h1>
+        <div id="dataDisplay"></div>
     </main>
-    <h1>Dane zamówienia</h1>
-    <div id="dataDisplay"></div>
 
+    <footer>
+        <button id="dodaj-pozycje3" >Dodaj pozycje</button>
+    </footer>
 </div>
+</body>
 
 <script src="script4.js"></script>
-</body>
+
 </html>

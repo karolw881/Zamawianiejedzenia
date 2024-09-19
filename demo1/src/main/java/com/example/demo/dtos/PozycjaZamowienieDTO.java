@@ -35,6 +35,20 @@ public class PozycjaZamowienieDTO {
                 .build();
     }
 
+    public static PozycjaZamowienieDTO toDto(PozycjaZamowienie pozycjaZamowienie){
+        return PozycjaZamowienieDTO.builder()
+                .id(pozycjaZamowienie.getId())
+                .sposob_platnosci(pozycjaZamowienie.getSposob_platnosci())
+                .zamawiajacy(pozycjaZamowienie.getZamawiajacy())
+                .status(pozycjaZamowienie.getStatus())
+                .cena(pozycjaZamowienie.getCena())
+                .opis(pozycjaZamowienie.getOpis())
+                .id_zamowienia(pozycjaZamowienie.getZamowienie().getId())
+                .status(pozycjaZamowienie.getStatus())
+
+                .build();
+    }
+
 
 
 
