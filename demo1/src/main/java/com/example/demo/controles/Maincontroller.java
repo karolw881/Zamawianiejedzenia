@@ -138,8 +138,8 @@ public class Maincontroller {
 
    @GetMapping("/zamowienia")
    @CrossOrigin(origins = {"*"}, allowedHeaders = {"*"})
-    public ResponseEntity<List<Zamowienie>> getAllZamowieniaWithPozycje() {
-        List<Zamowienie> zamowienia = zamowienieService.getAllZamowienie();
+    public ResponseEntity<List<ZamowienieDTO>> getAllZamowieniaWithPozycje() {
+        List<ZamowienieDTO> zamowienia = zamowienieService.getAllZamowienie();
         return ResponseEntity.ok(zamowienia);
     }
 

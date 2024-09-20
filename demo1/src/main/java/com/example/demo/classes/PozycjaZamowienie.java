@@ -41,7 +41,7 @@ public class PozycjaZamowienie {
 
     @ManyToOne
     @JoinColumn(name = "id_zamowienia")
-    @JsonIgnore
+   // @JsonIgnore
     private Zamowienie zamowienie;
 
 }

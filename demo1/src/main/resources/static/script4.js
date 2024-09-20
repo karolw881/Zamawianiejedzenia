@@ -123,7 +123,9 @@ function addOrder() {
             postData('http://localhost:80/api/save', zamowienie)
                 .then(data => {
                     console.log('Order submitted successfully:', data);
-                    window.location.href = 'http://szybkaszama.pl';
+                    updateOrderInfo(data);
+                    window.location.href = `http://szybkaszama.pl/zamowienie.html#id=${data.id}`;
+                    updateOrderInfo(data);
                 })
                 .catch(error => logError('Error submitting order:', error));
         });
@@ -158,6 +160,23 @@ function isValidData(data) {
     return true;
 }
 
+function updateOrderInfo(data) {
+    const foodLink = document.getElementById('food-link');
+    if (foodLink) {
+        foodLink.href = data.link;
+        foodLink.textContent = data.link;
+    }
+
+    const czasUplynie = document.getElementById('do-kiedy');
+    if (czasUplynie) {
+        czasUplynie.textContent = data.do_kiedy;
+    }
+
+    const statusZamowienia = document.getElementById('status-zamowienia');
+    if (statusZamowienia) {
+        statusZamowienia.textContent = data.typ;
+    }
+}
 // Podfunkcja do budowania kodu HTML tabeli
 function buildTableHTML(pozycje) {
     let tableHTML = `
@@ -235,8 +254,10 @@ function buildTableHTML2(pozycje) {
         tableHTML += `
             <tr>
                 <td>${pozycja.id}
-                <td>${pozycja.link}</td>
                 <td>${pozycja.do_kiedy}</td>
+                <td>${pozycja.link}</td>
+                <td>${pozycja.data}</td>
+                
              
             </tr>`;
     });
@@ -254,6 +275,7 @@ function fetchDataAndDisplay() {
     fetchYour().then(data => {
         displayDataInTable(data);
         gotoformularz(data);
+        updateOrderInfo(data);
     });
 
 
@@ -298,6 +320,7 @@ function wyswietlObecneZamowienieZuuid() {
             console.log('Data received:', data);
             gotoformularz(data);
             displayDataInTable(data)
+            updateOrderInfo(data);
         })
 
 }

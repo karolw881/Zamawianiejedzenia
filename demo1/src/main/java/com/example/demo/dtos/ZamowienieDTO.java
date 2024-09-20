@@ -42,26 +42,16 @@ public class ZamowienieDTO {
     }
 
     // Mapstruct
-    public static ZamowienieDTO toDto(Zamowienie zamowienie) {
+    public static ZamowienieDTO toDto(Zamowienie zamowienie){
         return ZamowienieDTO.builder()
                 .id(zamowienie.getId())
                 .data(zamowienie.getData())
-                .typ(zamowienie.getTyp())
-                .link(zamowienie.getLink())
-                .do_kiedy(zamowienie.getDo_kiedy())
+                .typ(zamowienie.getDo_kiedy())
                 .pozycje(zamowienie.getPozycje().stream()
-                        .map(pozycja -> {
-                            PozycjaZamowienieDTO pozycjaDto = PozycjaZamowienieDTO.builder()
-                                    .id(pozycja.getId())
-
-                                    // Usuń referencję do zamowienia w PozycjaZamowienieDTO, aby unikać cykliczności
-                                    .build();
-                            return pozycjaDto;
-                        })
-                        .collect(Collectors.toList()))
-                .build();
+                        .map(PozycjaZamowienieDTO::toDto).collect(Collectors.toList()))
+                .link(zamowienie.getLink())
+                .do_kiedy(zamowienie.getDo_kiedy()).build();
     }
-
 
 
 

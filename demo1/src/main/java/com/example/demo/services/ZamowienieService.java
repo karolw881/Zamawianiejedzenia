@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -78,10 +79,27 @@ public class ZamowienieService {
 
 
 
-
+/*
     public List<Zamowienie> getAllZamowienie() {
         return zamowienieRepository.findAll();
     }
+
+ */
+
+    public List<ZamowienieDTO> getAllZamowienie() {
+        return zamowienieRepository.findAll().stream()
+                .map(z -> ZamowienieDTO.builder()
+                        .id(z.getId())
+                        .typ(z.getTyp())
+                        .link(z.getLink())
+                        .data(z.getData())
+                        .do_kiedy(z.getDo_kiedy())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+
+
 
     public void delete(Long i) {
         zamowienieRepository.deleteById(i);
