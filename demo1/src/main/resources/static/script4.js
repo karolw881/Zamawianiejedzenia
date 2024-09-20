@@ -123,9 +123,8 @@ function addOrder() {
             postData('http://localhost:80/api/save', zamowienie)
                 .then(data => {
                     console.log('Order submitted successfully:', data);
-                    updateOrderInfo(data);
                     window.location.href = `http://szybkaszama.pl/zamowienie.html#id=${data.id}`;
-                    updateOrderInfo(data);
+
                 })
                 .catch(error => logError('Error submitting order:', error));
         });
@@ -161,19 +160,40 @@ function isValidData(data) {
 }
 
 function updateOrderInfo(data) {
+    // Debugowanie danych wejściowych
+    console.log('Dane wejściowe:', data);
+
+    // Praca z linkiem do jedzenia
     const foodLink = document.getElementById('food-link');
     if (foodLink) {
-        foodLink.href = data.link;
-        foodLink.textContent = data.link;
+        const domainsToClear = ['szybkaszama.pl'];
+        let cleanLink = data.link;
+
+        // Debugowanie linku przed i po przetworzeniu
+        console.log('Oryginalny link:', cleanLink);
+
+        for (const domain of domainsToClear) {
+            const regex = new RegExp(`${domain}/.*`, 'i'); // Usuń wszystko po / po domenie
+            cleanLink = cleanLink.replace(regex, '');
+
+            // Debugowanie po każdej iteracji
+            console.log(`Link po usunięciu domeny ${domain}:`, cleanLink);
+        }
+
+        foodLink.textContent = cleanLink;
     }
 
+    // Praca z czasem
     const czasUplynie = document.getElementById('do-kiedy');
     if (czasUplynie) {
+        console.log('Aktualizacja czasu:', data.do_kiedy);
         czasUplynie.textContent = data.do_kiedy;
     }
 
+    // Praca ze statusem zamówienia
     const statusZamowienia = document.getElementById('status-zamowienia');
     if (statusZamowienia) {
+        console.log('Aktualizacja statusu:', data.typ);
         statusZamowienia.textContent = data.typ;
     }
 }
@@ -266,16 +286,12 @@ function buildTableHTML2(pozycje) {
     return tableHTML;
 }
 
-
-
-
-
 function fetchDataAndDisplay() {
 
     fetchYour().then(data => {
         displayDataInTable(data);
         gotoformularz(data);
-        updateOrderInfo(data);
+       // updateOrderInfo(data);
     });
 
 
@@ -347,7 +363,7 @@ function checkURLAndRedirect() {
 
 // Sprawdź, czy bieżąca strona to 'admin.html'
 function isAdminPage(currentPath) {
-    return currentPath.includes('admin.html');
+    return currentPath.includes('admin/admin.html');
 }
 
 // Sprawdź, czy bieżąca strona to 'zamowienie.html' lub 'formularz.html'
@@ -399,6 +415,7 @@ window.onload = function () {
         addOrder();
         // Jeśli chcesz dodać inne funkcje tylko dla admin.html, możesz je tutaj umieścić
         wyswietlZamowienia();
+
 
 
     }

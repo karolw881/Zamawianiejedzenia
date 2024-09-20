@@ -21,24 +21,29 @@ public class BasicAuthSecurity {
     }
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable()); // Use lambda-style to disable CSRF
-
-        http.authorizeHttpRequests(authorize -> authorize
+        http.csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/admin/**").authenticated()
                         .requestMatchers("/**").permitAll()
-                        .requestMatchers("/admin.html").authenticated()
                         .anyRequest().authenticated()
                 )
-                .httpBasic(httpBasic -> httpBasic.authenticationEntryPoint(authenticationEntryPoint));
+                .formLogin(form -> form
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .permitAll()
+                )
 
+
+            ;
         return http.build();
     }
-
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
                 .passwordEncoder(PasswordEncoderConfig.passwordEncoder())
-                .withUser("user1")
+                .withUser("admin")
                 .password(PasswordEncoderConfig.passwordEncoder().encode("password"))
                 .roles("ADMIN");
     }

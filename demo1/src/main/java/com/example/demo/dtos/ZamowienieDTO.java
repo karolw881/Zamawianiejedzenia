@@ -46,7 +46,7 @@ public class ZamowienieDTO {
         return ZamowienieDTO.builder()
                 .id(zamowienie.getId())
                 .data(zamowienie.getData())
-                .typ(zamowienie.getDo_kiedy())
+                .typ(zamowienie.getTyp())
                 .pozycje(zamowienie.getPozycje().stream()
                         .map(PozycjaZamowienieDTO::toDto).collect(Collectors.toList()))
                 .link(zamowienie.getLink())
