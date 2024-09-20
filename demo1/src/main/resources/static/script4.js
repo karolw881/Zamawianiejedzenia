@@ -366,6 +366,7 @@ function isAdminPage(currentPath) {
     return currentPath.includes('admin/admin.html');
 }
 
+
 // Sprawdź, czy bieżąca strona to 'zamowienie.html' lub 'formularz.html'
 function isZamowienieOrFormularzPage(currentPath) {
     return currentPath.includes('zamowienie.html') || currentPath.includes('formularz.html');
