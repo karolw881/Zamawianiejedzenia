@@ -114,14 +114,6 @@ public class ZamowienieService {
 
 
 
-    /*
-    public Optional<Zamowienie> findby(UUID id){
-        return zamowienieRepository.findById(Long.valueOf(String.valueOf(id)));
-    }
-
-     */
-
-
 
 
     public ZamowienieDTO getOstatnieZamowienie() {

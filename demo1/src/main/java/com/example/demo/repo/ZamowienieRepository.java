@@ -13,5 +13,5 @@ public interface ZamowienieRepository extends JpaRepository<Zamowienie, Long> {
     Optional<Zamowienie> findFirstByOrderByDataDesc();
 
 
-    Optional<Zamowienie> findById(UUID id);
+    Optional<Zamowienie>  findById(UUID id);
 }

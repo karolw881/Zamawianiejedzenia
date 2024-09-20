@@ -190,6 +190,65 @@ function buildTableHTML(pozycje) {
 }
 
 
+
+function wyswietlZamowienia(){
+    fetch(`http://localhost:80/api/zamowienia`)    .then(handleFetchResponse)
+        .then(data => {
+            // Sprawdzenie czy w odpowiedzi są dane, jeśli nie, przekieruj na error.html
+            if (!data) {
+                console.error('Order not found.');
+                //     window.location.href = 'http://szybkaszama.pl/error.html'; // Przekierowanie jeśli zamówienia nie ma
+                return;
+            }
+
+            // Jeśli dane są poprawne, wyświetl zamówienie
+            console.log('Data received:', data);
+            displaydata2(data);
+        })
+
+}
+
+function displaydata2(data){
+    const container = getContainer('dataDisplay2');
+    if (!container) return;
+    const tableHTML = buildTableHTML2(data);
+    container.innerHTML = tableHTML;
+}
+
+
+function buildTableHTML2(pozycje) {
+    let tableHTML = `
+        <table border='1'>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>do_kiedy</th>
+                    <th>link</th>
+                    <th>data</th>
+                   
+                </tr>
+            </thead>
+            <tbody>
+    `;
+
+    pozycje.forEach(pozycja => {
+        tableHTML += `
+            <tr>
+                <td>${pozycja.id}
+                <td>${pozycja.link}</td>
+                <td>${pozycja.do_kiedy}</td>
+             
+            </tr>`;
+    });
+
+    tableHTML += `</tbody></table>`;
+    return tableHTML;
+}
+
+
+
+
+
 function fetchDataAndDisplay() {
 
     fetchYour().then(data => {
@@ -296,25 +355,30 @@ function redirectToErrorPage() {
 
 
 window.onload = function () {
+    // Sprawdzenie, czy aktualna strona to admin.html
+    if (!window.location.pathname.includes('admin.html')) {
+        fetchDataAndDisplay();
+        // Dodanie event listenerów dla hashchange
+        window.addEventListener('hashchange', wyswietlObecneZamowienieZuuid);
+        wyswietlObecneZamowienieZuuid();
 
+        window.addEventListener('hashchange', checkURLAndRedirect);
+        checkURLAndRedirect();
+    }
 
-    fetchDataAndDisplay();
-
+    // Sprawdzenie, czy aktualna strona to formularz.html
     if (window.location.pathname.includes('formularz.html')) {
         addPositionOrder();
     }
+
+    // Sprawdzenie, czy aktualna strona to admin.html
     if (window.location.pathname.includes('admin.html')) {
         addOrder();
+        // Jeśli chcesz dodać inne funkcje tylko dla admin.html, możesz je tutaj umieścić
+        wyswietlZamowienia();
+
+
     }
-
-    // Poprawione: Usunięcie nawiasów, aby przypisać funkcję do event listenera, a nie ją wywoływać
-    window.addEventListener('hashchange', wyswietlObecneZamowienieZuuid);
-    wyswietlObecneZamowienieZuuid();
-
-
-
-    window.addEventListener('hashchange', checkURLAndRedirect);
-    checkURLAndRedirect();
 
 
 };

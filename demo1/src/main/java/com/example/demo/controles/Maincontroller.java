@@ -6,6 +6,8 @@ import com.example.demo.classes.PozycjaZamowienie;
 import com.example.demo.services.ZamowienieService;
 import com.example.demo.classes.Zamowienie;
 import com.example.demo.dtos.ZamowienieDTO;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +26,26 @@ public class Maincontroller {
     }
 
 
+
+    @GetMapping("/public/secureAPI")
+    public ResponseEntity securedApi(@RequestHeader HttpHeaders headers) {
+        if (headers.containsKey(HttpHeaders.AUTHORIZATION)) {
+            String authorizationHeader = headers.getFirst(HttpHeaders.AUTHORIZATION);
+            if (authorizationHeader.startsWith("Basic ")) {
+                return new ResponseEntity<>("Authentication passed", HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity("Unauthorized", HttpStatus.UNAUTHORIZED);
+    }
+
+
+
+
+
+
+
+
+
     // zamowieni o id 502 wyciagnac z bazy
     // tego dtos skonwertowacna encje
     // do zamowieia o id 502 dodac encja któa skonwertowałęm
@@ -33,6 +55,13 @@ public class Maincontroller {
 
     // metoda dodaj pozycje zamiast zamowienie_x.getPozycje().add(pozycjaZamowienieDTOEntity );pozycjaZamowienieDTOEntity.setZamowienie(zamowienie_x);
     // dwa razy niewyciagac z bazy id tylko  , metoda update robi to wszystko
+
+
+
+
+
+
+
 
     @CrossOrigin(origins = {"*"}, allowedHeaders = {"*"})
     @PostMapping("/formularz/{id}")
@@ -50,6 +79,7 @@ public class Maincontroller {
 
         return ResponseEntity.ok("okok");
     }
+
 
 
 
@@ -107,6 +137,7 @@ public class Maincontroller {
 
 
    @GetMapping("/zamowienia")
+   @CrossOrigin(origins = {"*"}, allowedHeaders = {"*"})
     public ResponseEntity<List<Zamowienie>> getAllZamowieniaWithPozycje() {
         List<Zamowienie> zamowienia = zamowienieService.getAllZamowienie();
         return ResponseEntity.ok(zamowienia);

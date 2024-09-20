@@ -11,6 +11,7 @@ import java.util.UUID;
 @Value
 @Builder
 @Jacksonized
+@Setter
 public class PozycjaZamowienieDTO {
 
     private Integer id;
