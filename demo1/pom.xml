@@ -116,7 +116,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.example.Demo1Application</mainClass>
+                            <mainClass>com.example.demo.Demo1Application</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
