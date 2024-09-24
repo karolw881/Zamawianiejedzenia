@@ -6,17 +6,23 @@ import com.example.demo.classes.PozycjaZamowienie;
 import com.example.demo.services.ZamowienieService;
 import com.example.demo.classes.Zamowienie;
 import com.example.demo.dtos.ZamowienieDTO;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingErrorProcessor;
+import org.springframework.validation.Errors;
+import org.springframework.validation.MapBindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.BindingResult;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RequestMapping("/api")
 @RestController
-public class Maincontroller {
+public class    Maincontroller {
     private final ZamowienieService zamowienieService;
 
 
@@ -65,7 +71,14 @@ public class Maincontroller {
 
     @CrossOrigin(origins = {"*"}, allowedHeaders = {"*"})
     @PostMapping("/formularz/{id}")
-    public ResponseEntity<?> dodajPozycjeDoZamowienia(@PathVariable String id, @RequestBody PozycjaZamowienieDTO pozycjaZamowienieDTO) {
+    public ResponseEntity<?> dodajPozycjeDoZamowienia(@PathVariable String id, @Valid  @RequestBody  PozycjaZamowienieDTO pozycjaZamowienieDTO , BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            StringBuilder errors = new StringBuilder();
+            bindingResult.getFieldErrors().forEach(error -> {
+                errors.append(error.getField()).append(": ").append(error.getDefaultMessage()).append("; ");
+            });
+            return ResponseEntity.badRequest().body(errors.toString());
+        }
         Zamowienie zamowienie_x = zamowienieService.findby(id).orElseThrow();
 
         PozycjaZamowienie pozycjaZamowienieDTOEntity = pozycjaZamowienieDTO.toEntity();
