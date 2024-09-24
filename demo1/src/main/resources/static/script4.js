@@ -93,6 +93,7 @@ function addPositionOrder() {
                         window.location.href = `http://szybkaszama.pl/zamowienie.html#id=${id}`;
                     })
                     .catch(error => logError('Error submitting form:', error));
+
             } else {
                 console.error('ID parameter not found in URL.');
             }
@@ -165,23 +166,27 @@ function updateOrderInfo(data) {
 
     // Praca z linkiem do jedzenia
     const foodLink = document.getElementById('food-link');
-    if (foodLink) {
-        const domainsToClear = ['szybkaszama.pl'];
-        let cleanLink = data.link;
+    if (foodLink && data.link) {
+        let mesyyLink = data.link;
 
-        // Debugowanie linku przed i po przetworzeniu
-        console.log('Oryginalny link:', cleanLink);
+        // Debug the original link
+        console.log('Oryginalny link:', mesyyLink);
+        console.log('Link before modification:', foodLink.href);
 
-        for (const domain of domainsToClear) {
-            const regex = new RegExp(`${domain}/.*`, 'i'); // Usuń wszystko po / po domenie
-            cleanLink = cleanLink.replace(regex, '');
+        // Remove 'szybkaszama.pl' from the link if it exists
+        const cleanLink = mesyyLink.replace(/^(https?:\/\/)?(www\.)?szybkaszama\.pl\/?/, '');
 
-            // Debugowanie po każdej iteracji
-            console.log(`Link po usunięciu domeny ${domain}:`, cleanLink);
-        }
-
+        // Ensure the cleaned link starts with 'http://'
+        foodLink.href = cleanLink.startsWith('http') ? cleanLink : `http://${cleanLink}`;
         foodLink.textContent = cleanLink;
+
+        // Debug after modification
+        console.log('Updated href:', foodLink.href);
+        console.log('Link after removing domain:', cleanLink);
     }
+
+
+
 
     // Praca z czasem
     const czasUplynie = document.getElementById('do-kiedy');
@@ -366,6 +371,7 @@ function isAdminPage(currentPath) {
     return currentPath.includes('admin/admin.html');
 }
 
+
 // Sprawdź, czy bieżąca strona to 'zamowienie.html' lub 'formularz.html'
 function isZamowienieOrFormularzPage(currentPath) {
     return currentPath.includes('zamowienie.html') || currentPath.includes('formularz.html');
@@ -385,6 +391,28 @@ function shouldRedirectToErrorPage(currentPath, id) {
 
     return false;
 }
+
+function initFormValidation() {
+    const form = document.getElementById('orderForm');
+    const cenaInput = document.getElementById('cenax');
+    const validationError = document.getElementById('validationError');
+    console.log(form);
+    form.addEventListener('submit', function(event) {
+        event.preventDefault(); // Zatrzymaj domyślne zachowanie formularza
+
+        const cenaValue = cenaInput.value.trim();
+
+        // Sprawdź, czy wprowadzona wartość jest liczbą
+        if (isNaN(cenaValue) || cenaValue === '') {
+            validationError.style.display = 'block'; // Pokaż diva z błędem
+        } else {
+            validationError.style.display = 'none'; // Ukryj diva z błędem
+            // Tutaj możesz wykonać dalsze operacje po poprawnym wprowadzeniu ceny
+            // np. wysłać formularz lub wykonać inne czynności
+        }
+    });
+}
+
 
 // Funkcja do przekierowania do strony błędu
 function redirectToErrorPage() {
@@ -407,6 +435,8 @@ window.onload = function () {
 
     // Sprawdzenie, czy aktualna strona to formularz.html
     if (window.location.pathname.includes('formularz.html')) {
+      // do poprawy   initFormValidation();
+
         addPositionOrder();
     }
 
