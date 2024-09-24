@@ -165,23 +165,25 @@ function updateOrderInfo(data) {
 
     // Praca z linkiem do jedzenia
     const foodLink = document.getElementById('food-link');
-    if (foodLink) {
-        const domainsToClear = ['szybkaszama.pl'];
-        let cleanLink = data.link;
+    if (foodLink && data.link) {
+        let mesyyLink = data.link;
 
-        // Debugowanie linku przed i po przetworzeniu
-        console.log('Oryginalny link:', cleanLink);
+        // Debug the original link
+        console.log('Oryginalny link:', mesyyLink);
+        console.log('Link before modification:', foodLink.href);
 
-        for (const domain of domainsToClear) {
-            const regex = new RegExp(`${domain}/.*`, 'i'); // Usuń wszystko po / po domenie
-            cleanLink = cleanLink.replace(regex, '');
+        // Remove 'szybkaszama.pl' from the link if it exists
+        const cleanLink = mesyyLink.replace(/^(https?:\/\/)?(www\.)?szybkaszama\.pl\/?/, '');
 
-            // Debugowanie po każdej iteracji
-            console.log(`Link po usunięciu domeny ${domain}:`, cleanLink);
-        }
-
+        // Ensure the cleaned link starts with 'http://'
+        foodLink.href = cleanLink.startsWith('http') ? cleanLink : `http://${cleanLink}`;
         foodLink.textContent = cleanLink;
+
+        // Debug after modification
+        console.log('Updated href:', foodLink.href);
+        console.log('Link after removing domain:', cleanLink);
     }
+
 
     // Praca z czasem
     const czasUplynie = document.getElementById('do-kiedy');
