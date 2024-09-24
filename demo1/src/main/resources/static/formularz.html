@@ -7,28 +7,37 @@
     <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
     <link rel="shortcut icon" href="#" />
 </head>
-<body>
+
 <div class="container">
     <header>
-        <h1>Szybka Szama</h1>
+        <h1>Szybka Szama </h1>
+
         <div class="up">
             <a href="http://szybkaszama.pl/admin/admin.html" >Admin</a>
+
         </div>
 
 
     </header>
+</div>
+
+<body>
+<div class="container">
+
+
 
     <main>
         <section class="selection-section">
             <div class="info-box">
                 <h2>Wybrany link:</h2>
-                <a href="#" id="food-link">Link to choosen food website</a>
+                <a href="" id="food-link">Link to choosen food website</a>
             </div>
 
             <div class="order-info">
                 <div class="timer">
+                    <h2>Informacje:</h2>
                     <p><strong>Czas upłynie o:</strong> <span id="do-kiedy">10:00</span></p>
-                    <p><strong>Zostało:</strong> <span id="czas-pozostaly">21 min 30 sec</span></p>
+
                 </div>
                 <div class="order-status">
                     <p><strong>Dzisiaj wybraliśmy opcje:</strong> <span id="status-zamowienia">przed złożeniem</span></p>
@@ -47,8 +56,9 @@
 
             <label for="cenax">Cena</label>
             <textarea name="cenax" id="cenax"></textarea>
+            <div id="validationError" style="color: red; display: none;">Cena musi być liczbą!</div>
 
-            <button type="submit" id="submit-btn">Złóż</button>
+            <button type="submit" id="submit-btn" >Złóż</button>
         </form>
     </main>
     <h1>Dane zamówienia</h1>
@@ -58,4 +68,13 @@
 
 <script src="script4.js"></script>
 </body>
+
+
+<div class="container">
+    <footer class="footer">
+        <div class="footer-text">K@W Entertainment sp. z o.o.</div>
+        <div class="footer-contact">Kontakt: 518 355 678</div>
+    </footer>
+
+</div>
 </html>
