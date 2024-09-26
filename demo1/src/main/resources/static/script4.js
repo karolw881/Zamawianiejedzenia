@@ -34,6 +34,26 @@ function postData(url, data) {
     }).then(handleFetchResponse);
 }
 
+
+function  fetchlast(){
+    fetch(`http://localhost:80/api/lastOrder`)
+        .then(handleFetchResponse)
+        .then(data => {
+
+            console.log(data.link);
+            let link = document.getElementById('food-link');
+            let status_zamowienia = document.getElementById('status-zamowienia');
+            let do_kiedy = document.getElementById('do-kiedy');
+
+            link.textContent = data.link;
+            status_zamowienia.textContent = data.typ;
+            do_kiedy.textContent = data.do_kiedy;
+            console.log("aaa" + data.statu);
+
+
+        })
+}
+
 function fetchYour() {
 
     const urlParams = new URLSearchParams(window.location.hash.slice(1)); // get params from hash
@@ -114,7 +134,7 @@ function addOrder() {
             const typ = document.querySelector('input[name="typ"]:checked')?.value;
             const doKiedy = document.getElementById('do_kiedy').value;
             const link = document.getElementById('link').value;
-
+            if (!validateAdminDate()){return false;};
             const zamowienie = {
                 typ: typ || '',
                 do_kiedy: doKiedy || '',
@@ -455,17 +475,30 @@ function validateForm() {
     return isValid; // Zwracamy prawdę tylko, gdy wszystkie pola są poprawne
 }
 
+function validateAdminDate() {
+    var dateString = document.getElementById("do_kiedy").value;
+    var dateRegex = /^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$/;
 
+    if (dateRegex.test(dateString)) {
+        document.getElementById("validationError6").style.display = "none";
+        return true;
+    } else {
+        document.getElementById("validationError6").style.display = "block";
+        return false;
+    }
+}
 window.onload = function () {
     // Sprawdzenie, czy aktualna strona to admin.html
     if (!window.location.pathname.includes('admin.html')) {
         fetchDataAndDisplay();
         // Dodanie event listenerów dla hashchange
+
         window.addEventListener('hashchange', wyswietlObecneZamowienieZuuid);
         wyswietlObecneZamowienieZuuid();
 
         window.addEventListener('hashchange', checkURLAndRedirect);
         checkURLAndRedirect();
+
     }
 
     // Sprawdzenie, czy aktualna strona to formularz.html
@@ -479,6 +512,7 @@ window.onload = function () {
         addOrder();
         // Jeśli chcesz dodać inne funkcje tylko dla admin.html, możesz je tutaj umieścić
         wyswietlZamowienia();
+        fetchlast();
 
 
 

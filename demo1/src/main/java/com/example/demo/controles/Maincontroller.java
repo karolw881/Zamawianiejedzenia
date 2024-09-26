@@ -107,7 +107,7 @@ public class    Maincontroller {
 
 
 
-    @CrossOrigin
+    @CrossOrigin(origins = {"*"}, allowedHeaders = {"*"})
     @GetMapping("/lastOrder")
     public ResponseEntity<ZamowienieDTO> getLastOrder() {
         ZamowienieDTO zamowienieDTO = zamowienieService.getOstatnieZamowienie();

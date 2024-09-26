@@ -30,17 +30,17 @@
     <main>
         <section class="selection-section">
             <div class="info-box">
-                <h2>Dzisiaj wybraliśmy:</h2>
+                <h2>Ostatnio wybraliśmy Link:</h2>
                 <a href="#" id="food-link">Link to choosen food website</a>
             </div>
 
             <div class="order-info">
                 <h2>Informacje:</h2>
                 <div class="timer">
-                    <p><strong>Czas upłynie o:</strong> <span id="do-kiedy">10:00</span></p>
+                    <p><strong>Ostatnie zamowienie było do godziny:</strong> <span id="do-kiedy">10:00</span></p>
                 </div>
                 <div class="order-status">
-                    <p><strong>Twoje zamówienie:</strong> <span id="status-zamowienia">przed złożeniem</span></p>
+                    <p><strong>Ostatno wybrano zamówienie:</strong> <span id="status-zamowienia">przed złożeniem</span></p>
                 </div>
             </div>
         </section>
@@ -58,6 +58,8 @@
 
             <label for="do_kiedy">Do której można składać zamówienie:</label>
             <textarea name="do_kiedy" id="do_kiedy"></textarea>
+
+            <div id="validationError6" style="color: red; display: none;">Czas podawany w Formacie GG:MM:SS</div>
 
             <label for="link">Link do restauracji:</label>
             <textarea name="link" id="link"></textarea>
