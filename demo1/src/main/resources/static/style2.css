@@ -152,16 +152,29 @@ table {
     border-collapse: collapse;
 }
 
-table th, table td {
-    border: 1px solid #ccc;
-    padding: 10px;
-    text-align: left;
+table td {
+    max-width: 200px; /* lub inna odpowiednia wartość */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+}
+
+table th {
+    max-width: 200px; /* lub inna odpowiednia wartość */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
 }
 
 table th {
     background-color: #f2f2f2;
 }
-
+/* Ustaw szerokość dla wybranej kolumny */
+table th:nth-child(2), table td:nth-child(2) {
+    width: 70%; /* Dostosuj wartość według potrzeb */
+}
 
 
 
@@ -179,25 +192,28 @@ btn button {
     border-radius: 4px;
     cursor: pointer;
 }
-
 /* Stylizacja formularza */
 #orderForm {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 20px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  background: #f9f9f9;
+    width: 400px; /* Ustawienie stałej szerokości */
+    height: auto; /* Możesz ustawić stałą wysokość, jeśli chcesz */
+    max-height: 600px; /* Opcjonalnie, aby ograniczyć maksymalną wysokość */
+    margin: 0 auto;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    background: #f9f9f9;
+    overflow-y: auto; /* Dodanie przewijania, jeśli zawartość przekroczy wysokość */
 }
 
 #orderForm div.typ {
-  margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 #orderForm p {
-  margin-bottom: 10px;
-  font-weight: bold;
+    margin-bottom: 10px;
+    font-weight: bold;
 }
+
 #orderForm label {
     display: inline-block;
     margin-left: 5px;
@@ -210,15 +226,14 @@ btn button {
 }
 
 #orderForm textarea {
-  width: 100%;
-  padding: 10px;
-  border-radius: 4px;
-  border: 1px solid #ddd;
-  box-sizing: border-box;
-  margin-bottom: 20px;
-  resize: vertical;
-  margin-right: 10px;
-    margin-left:  10px;
+    width: calc(100% - 20px); /* Zmniejszenie szerokości o marginesy */
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    margin-right: 0; /* Usunięcie marginesu po prawej */
+    margin-left: 0; /* Usunięcie marginesu po lewej */
 }
 
 #orderForm button {
@@ -267,3 +282,25 @@ btn button {
     box-shadow: 0 5px #666;
     transform: translateY(4px);
 }
+
+@media screen and (min-width: 1920px) and (max-height: 1200px) {
+    .container {
+        width: 85%; /* Dostosowanie szerokości kontenera */
+        max-width: 1800px; /* Zwiększenie maksymalnej szerokości na duże ekrany */
+        margin: 30px auto; /* Większy margines, aby zawartość nie była "sklejona" z krawędziami */
+    }
+
+    header h1 {
+        font-size: 28px; /* Większa czcionka nagłówka dla lepszej czytelności */
+    }
+
+    .info-box, .order-info {
+        width: 48%; /* Dostosowanie szerokości boksów, aby lepiej pasowały do szerszego ekranu */
+    }
+
+    table th, table td {
+        font-size: 18px; /* Większa czcionka w tabelach na dużych ekranach */
+        padding: 15px; /* Większe odstępy w tabeli */
+    }
+}
+

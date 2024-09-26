@@ -78,7 +78,9 @@ function addPositionOrder() {
             const cena = document.getElementById('cenax').value;
             const urlParams = new URLSearchParams(window.location.hash.slice(1)); // get params from hash
             const id = urlParams.get('id');
-
+            if (!validateForm()) { // Sprawdzamy, czy formularz jest poprawny
+                return false; // Zatrzymujemy dalsze wykonanie
+            }
             if (id) {
                 const pozycjaZamowienie = {
                     zamawiajacy,
@@ -206,10 +208,11 @@ function buildTableHTML(pozycje) {
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Opis</th>
-                    <th>Cena</th>
-                    <th>Status</th>
+                    <th>Opis </th>
+                    <th>Cena</th> 
                     <th>Zamawiający</th>
+                    
+                 
                 </tr>
             </thead>
             <tbody>
@@ -221,7 +224,6 @@ function buildTableHTML(pozycje) {
                 <td>${pozycja.id}</td>
                 <td>${pozycja.opis}</td>
                 <td>${pozycja.cena}</td>
-                <td>${pozycja.status}</td>
                 <td>${pozycja.zamawiajacy}</td>
             </tr>`;
     });
@@ -262,8 +264,9 @@ function buildTableHTML2(pozycje) {
         <table border='1'>
             <thead>
                 <tr>
+                         <th>do_kiedy</th>
                     <th>ID</th>
-                    <th>do_kiedy</th>
+               
                     <th>link</th>
                     <th>data</th>
                    
@@ -275,8 +278,9 @@ function buildTableHTML2(pozycje) {
     pozycje.forEach(pozycja => {
         tableHTML += `
             <tr>
+                    <td>${pozycja.do_kiedy}</td>
                 <td>${pozycja.id}
-                <td>${pozycja.do_kiedy}</td>
+            
                 <td>${pozycja.link}</td>
                 <td>${pozycja.data}</td>
                 
@@ -394,6 +398,63 @@ function redirectToErrorPage() {
 }
 
 
+function validateForm() {
+    var cena = document.getElementById("cenax").value;
+    var opis = document.getElementById("opis").value;
+    var zamawiajacy = document.getElementById("zamawiajacy").value;
+
+    // Pobieranie elementów z błędami walidacji
+    var validationError = document.getElementById("validationError");
+    var validationError2 = document.getElementById("validationError2");
+    var validationError3 = document.getElementById("validationError3");
+    var validationError4 = document.getElementById("validationError4");
+    var validationError5 = document.getElementById("validationError5");
+
+    var isValid = true;
+
+    // Walidacja ceny - sprawdzamy, czy cena jest liczbą
+    if (isNaN(cena)) {
+        validationError.style.display = "block";
+        isValid = false;
+    } else {
+        validationError.style.display = "none";
+    }
+
+    // Sprawdzamy, czy cena jest pusta
+    if (cena === '') {
+        validationError2.style.display = "block";
+        isValid = false;
+    } else {
+        validationError2.style.display = "none";
+    }
+
+    // Sprawdzamy, czy cena jest większa od 0
+    if (parseFloat(cena) <= 0) {
+        validationError3.style.display = "block";
+        isValid = false;
+    } else {
+        validationError3.style.display = "none";
+    }
+
+    // Sprawdzamy, czy zamawiający nie jest pusty
+    if (zamawiajacy === "") {
+        validationError5.style.display = "block";
+        isValid = false;
+    } else {
+        validationError5.style.display = "none";
+    }
+
+    // Sprawdzamy, czy opis nie jest pusty
+    if (opis === "") {
+        validationError4.style.display = "block";
+        isValid = false;
+    } else {
+        validationError4.style.display = "none";
+    }
+
+    return isValid; // Zwracamy prawdę tylko, gdy wszystkie pola są poprawne
+}
+
 
 window.onload = function () {
     // Sprawdzenie, czy aktualna strona to admin.html
@@ -410,6 +471,7 @@ window.onload = function () {
     // Sprawdzenie, czy aktualna strona to formularz.html
     if (window.location.pathname.includes('formularz.html')) {
         addPositionOrder();
+
     }
 
     // Sprawdzenie, czy aktualna strona to admin.html
