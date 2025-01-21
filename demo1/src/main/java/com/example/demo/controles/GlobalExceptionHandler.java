@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.NoHandlerFoundException;
+
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 
@@ -59,6 +61,14 @@ public class GlobalExceptionHandler {
         );
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    // Obsługa błędu 404
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public ResponseEntity<String> handleNotFoundError(NoHandlerFoundException ex) {
+        String errorMessage = "Error 404: The requested resource was not found.";
+        return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
+    }
+
 
     // Klasa wewnętrzna dla odpowiedzi błędu
     public static class CustomErrorResponse {

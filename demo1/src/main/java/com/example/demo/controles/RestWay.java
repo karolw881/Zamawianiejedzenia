@@ -1,6 +1,7 @@
 package com.example.demo.controles;
 
 
+import com.example.demo.classes.PozycjaZamowienie;
 import com.example.demo.dtos.PozycjaZamowienieDTO;
 import com.example.demo.dtos.ZamowienieDTO;
 import com.example.demo.classes.Zamowienie;
@@ -14,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.AccessDeniedException;
+import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
@@ -49,9 +51,35 @@ public class RestWay{
 
     // POST /zamowienia - Create new order
     @PostMapping
-    public ResponseEntity<ZamowienieDTO> createZamowienie(@RequestBody Zamowienie zamowienie) {
-        ZamowienieDTO createdZamowienie = zamowienieService.createZamowienie(zamowienie);
-        return ResponseEntity.ok(createdZamowienie);
+    public ResponseEntity<?> createZamowienie(@RequestHeader HttpHeaders headers, @RequestBody Zamowienie zamowienie) {
+        // Weryfikacja nagłówka Authorization
+        if (headers.containsKey(HttpHeaders.AUTHORIZATION)) {
+            String authorizationHeader = headers.getFirst(HttpHeaders.AUTHORIZATION);
+            if (authorizationHeader != null && authorizationHeader.startsWith("Basic ")) {
+                // Dekodowanie Base64
+                String base64Credentials = authorizationHeader.substring("Basic ".length());
+                String credentials = new String(Base64.getDecoder().decode(base64Credentials));
+                String[] values = credentials.split(":", 2);
+
+                // Sprawdzanie poprawności loginu i hasła
+                String username = values[0];
+                String password = values[1];
+
+                if (isAuthenticated(username, password)) {
+                    // Jeśli uwierzytelnianie się powiodło, wykonaj zapis zamówienia
+                    ZamowienieDTO createdZamowienie = zamowienieService.createZamowienie(zamowienie);
+                    return ResponseEntity.ok(createdZamowienie);
+                }
+            }
+        }
+        // Zwrot odpowiedzi Unauthorized, jeśli uwierzytelnianie się nie powiodło
+        return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
+    }
+
+    private boolean isAuthenticated(String username, String password) {
+        // Przykładowe uwierzytelnianie
+        // Tutaj możesz podłączyć logikę sprawdzania w bazie danych lub innym systemie
+        return "admin".equals(username) && "password".equals(password);
     }
 
     // PUT /zamowienia/{id} - Update order
@@ -63,37 +91,36 @@ public class RestWay{
 
     // DELETE /zamowienia/{id} - Delete order
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteZamowienie(@PathVariable UUID id) {
+    public ResponseEntity<?> deleteZamowienie(@PathVariable UUID id) {
         zamowienieService.delete(id);
-        return ResponseEntity.noContent().build();
+        //return ResponseEntity.noContent().build();
+        return  ResponseEntity.ok("sie udalo");
     }
 
     // POST /zamowienia/{id}/pozycje - Add position to order
     @PostMapping("/{id}/pozycje")
-    public ResponseEntity<?> addPozycjaToZamowienie(
-            @PathVariable String id,
-            @Valid @RequestBody PozycjaZamowienieDTO pozycjaZamowienieDTO,
-            BindingResult bindingResult) {
-
+    public ResponseEntity<?> dodajPozycjeDoZamowienia(@PathVariable String id, @Valid  @RequestBody  PozycjaZamowienieDTO pozycjaZamowienieDTO , BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             StringBuilder errors = new StringBuilder();
-            bindingResult.getFieldErrors().forEach(error ->
-                    errors.append(error.getField())
-                            .append(": ")
-                            .append(error.getDefaultMessage())
-                            .append("; ")
-            );
+            bindingResult.getFieldErrors().forEach(error -> {
+                errors.append(error.getField()).append(": ").append(error.getDefaultMessage()).append("; ");
+            });
             return ResponseEntity.badRequest().body(errors.toString());
         }
+        Zamowienie zamowienie_x = zamowienieService.findby(id).orElseThrow();
 
-        Zamowienie zamowienie = zamowienieService.findby(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Zamowienie not found with id: " + id));
+        PozycjaZamowienie pozycjaZamowienieDTOEntity = pozycjaZamowienieDTO.toEntity();
+        pozycjaZamowienieDTOEntity.setZamowienie(zamowienie_x);
 
-        zamowienieService.dodajPozycje(zamowienie, pozycjaZamowienieDTO);
-        zamowienieService.save(zamowienie);
+        zamowienieService.dodajPozycje(zamowienie_x, pozycjaZamowienieDTO);
 
-        return ResponseEntity.ok().build();
+        // serviceZamowienie.updateZamowienie(id, zamowienie_x);
+
+        zamowienieService.save(zamowienie_x);
+
+        return ResponseEntity.ok("okok");
     }
+
 
     // GET /zamowienia/latest - Get latest order
     @GetMapping("/latest")
